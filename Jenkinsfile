@@ -1,24 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        steps('Build') {
             steps {
-                echo 'Hello world'
-                sh 'ls -lah'
+                sh 'echo "Hello World"'
+                sh '''
+                    echo "Multiline shell steps works too"
+                    ls -lah
+                '''
             }
-        }
-        stage(‘Lint HTML’) {
-            steps {
-                sh ‘tidy -q -e *.html’
-            }
-        }
-        stage('Upload to AWS') {
-             steps {
-                 withAWS(region:'eu-west-3',credentials:'webserver_login') {
-                 sh 'echo "Uploading content with AWS creds"'
-                     s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'index.html', bucket:'project3-jenkins-pipeline-on-aws')
-                 }
-             }
-        }
-    }
-}
+         }
+     }
+ }
